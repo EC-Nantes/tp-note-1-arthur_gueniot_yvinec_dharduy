@@ -1,12 +1,14 @@
 #ifndef _CONSTRUCTIBLE_HPP_
 #define _CONSTRUCTIBLE_HPP_
 
+#include "Parcelle.hpp"
+
 
 class Constructible {
 
-  public :
+  public:
+    virtual float surfaceConstructible()const=0 ; //Fonction virtuelle pure
 
-    virtual void surfaceConstructible()=0;
 };
 
 #endif

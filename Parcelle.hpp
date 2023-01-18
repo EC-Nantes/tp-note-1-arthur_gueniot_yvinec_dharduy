@@ -6,18 +6,16 @@
 #include "Polygone.hpp"
 
 class Parcelle {
-  private :
+  protected :
     std::string type;
     int numero;
     std::string proprietaire;
     float surface;
     Polygone<int> forme;
+    int pConstructible;
 
   public :
-
-    
-    Parcelle(int num, std::string prop, Polygone<int> forme_poly) 
-                  : numero(num), proprietaire(prop), forme(forme_poly) {}
+    Parcelle(int num, std::string prop, Polygone<int> forme_poly);
     Parcelle(Parcelle &parc);
     int getNumero() const;
     std::string getProprietaire() const;
@@ -27,8 +25,12 @@ class Parcelle {
     void setNumero(int n);
     void setproprietaire(std::string prop);
     void setForme(Polygone<int> forme);
-    virtual void setType(std::string type)=0;
+    virtual void setType(std::string type) =0; //virtuelle pure à redéfinir dans les classes filles (Zxx)
     friend std::ostream& operator<<(std::ostream& flux,Parcelle const& p);
+    virtual void afficher() const =0;
+
+private :
+      void calculSurface();
 };
 
 #endif

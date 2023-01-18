@@ -25,14 +25,14 @@ public:
   /* Méthode de la classe */
   vector<Point2D<T>> getSommets( ) const;
   void setSommets(vector<Point2D<T>> listeSommets);
-  void addPoint(Point2D<T>);
+  void addPoint(Point2D<T> point);
   void translater(T x, T y);
   friend std::ostream &operator<< <T>(std::ostream &s, Polygone<T> const &p);
 };
 
 /*********************************************************************
  * Constructeurs
- *********************************************************************/
+*********************************************************************/
 /** 
  * Constructeur par défaut
  */
@@ -55,7 +55,7 @@ template <typename T> Polygone<T>::Polygone(Polygone<T> const &poly) {
 }
 /*********************************************************************
  * Méthodes de classe
- *********************************************************************/
+*********************************************************************/
 template <typename T> vector<Point2D<T>> Polygone<T>::getSommets( ) const{
   return this->sommets;
 }
