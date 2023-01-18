@@ -15,6 +15,9 @@ class Zu : public virtual Parcelle, public virtual Constructible{
     void setType(std::string type);
     // friend std::ostream& operator<< (std::ostream &flux, Zu const &zu);
       void afficher()const;
+      std::ostream& doprint(std::ostream& os) const{
+      return os << "One";
+    };
 };
 
 

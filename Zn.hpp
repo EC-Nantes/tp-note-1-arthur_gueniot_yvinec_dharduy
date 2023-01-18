@@ -11,6 +11,9 @@ public :
   void setType(string type);
  // friend std::ostream& operator<< (std::ostream &flux, Zn  const&p);
       void afficher()const;
+      std::ostream& doprint(std::ostream& os) const{
+      return os << "One";
+    };
 };
 
 

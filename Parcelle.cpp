@@ -13,6 +13,9 @@
 //   p.afficher();
 //   return flux;
 // }
+std::ostream &operator<<(std::ostream &flux, Parcelle const &p) {
+  return p.doprint(flux);
+}
 Parcelle::Parcelle(int num, std::string prop, Polygone<int> forme_poly)
     : numero(num), proprietaire(prop), forme(forme_poly) {
     this->calculSurface();
@@ -44,7 +47,9 @@ void Parcelle::calculSurface() {
 
   float surface = 0;
   for (int i = 0; i < points.size() - 1; i++) {
-    surface += (points[i].getX() * points[i + 1].getY()) -
+    /* ATTENTION on ne calcule pas le dernier point size() - 1 et "strictement inférieur" on calcule jusqu'à size-2 
+        le dernier point est le aussi le premier de la forme (xn, yn) = (x0, y0) */
+    surface += (points[i].getX() * points[i + 1].getY()) - 
                (points[i + 1].getX() * points[i].getY());
   }
   this->surface = surface / 2;

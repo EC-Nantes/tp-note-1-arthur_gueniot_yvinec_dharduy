@@ -95,12 +95,7 @@ std::ostream &operator<<(std::ostream &o, Carte const &p) {
     o << "La carte est de taille " << p.getSurfaceTotale() << endl;
 
     for (auto  uneParcelle : lesParcelles) {
-       // if(uneParcelle->getType()=="ZU") {
-       //   uneParcelle->surfaceConstructible();
-       // } else {
-       //    cout << "c is not an instance of the class Parent" << endl;
-       // }
-      uneParcelle->afficher();
+      cout << *uneParcelle <<std::endl;
     }
   }
   return o;

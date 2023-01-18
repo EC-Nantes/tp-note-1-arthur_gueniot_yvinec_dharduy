@@ -10,7 +10,7 @@ Za::Za(int num, string prop, Polygone<int> forme, string typeCulture,
 
   // La construction est possible si la surface requise est inférieure à 10% de
   // la surface du terrain et aussi < à 200m2
-  if ((surfaceBatAgri < this->surface * 0.1) && (surfaceBatAgri < 200)) {
+  if ( (surfaceBatAgri < this->surface * 0.1) && (surfaceBatAgri < 200) ) {
     this->surfaceBatAgri = surfaceBatAgri;
   } else {
     this->surfaceBatAgri = 0;
@@ -21,7 +21,7 @@ void Za::setType(std::string type) { this->type = type; }
 
 string Za::getTypeCulture() const { return this->typeCulture; }
 
-float Za::surfaceConstructiblegetSurfaceBatAgri() const {
+float Za::getSurfaceBatAgri() const {
   return this->surfaceBatAgri;
 }
 
@@ -39,3 +39,15 @@ float Za::surfaceConstructiblegetSurfaceBatAgri() const {
 // }
 
 void Za::afficher() const{ std::cout << "Affichage Za"; }
+
+std::ostream& Za::doprint(std::ostream& os) const{
+  os << "Parcelle n° " << this->numero <<  " \n"
+       << "\tType : " << this->getType() <<  " \n"
+       << "\t" << this->getForme() <<  " \n"
+       << "\tProprietaire : " << this->getProprietaire() <<  " \n"
+       << "\tSurface : " << this->getSurface() <<  " \n"
+       << "\tSurface Batiment Agricole : " << this->getSurfaceBatAgri() << " \n"
+       << "\tType culture : " << this->getTypeCulture() << " \n"
+       <<  " \n";
+  return os;
+}

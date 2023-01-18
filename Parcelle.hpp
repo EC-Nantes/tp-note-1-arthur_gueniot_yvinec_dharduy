@@ -28,6 +28,7 @@ class Parcelle {
     virtual void setType(std::string type) =0; //virtuelle pure à redéfinir dans les classes filles (Zxx)
     friend std::ostream& operator<<(std::ostream& flux,Parcelle const& p);
     virtual void afficher() const =0;
+    virtual std::ostream& doprint(std::ostream& os) const = 0;
 
 private :
       void calculSurface();

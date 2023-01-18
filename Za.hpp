@@ -10,8 +10,8 @@ using namespace std;
 class Za: public virtual Parcelle {
 
     private:
-    string typeCulture;
-    float surfaceBatAgri;
+      string typeCulture;
+      float surfaceBatAgri;
 
     public:
       Za(int num, string prop, Polygone<int> forme, string typeCulture, float surfaceBatAgri, int pConstructible);
@@ -21,5 +21,6 @@ class Za: public virtual Parcelle {
       float surfaceConstructiblegetSurfaceBatAgri() const;
       // friend std::ostream& operator<< (std::ostream &flux, Za  const& za);
       void afficher()const;
+      std::ostream& doprint(std::ostream& os) const;
 };
 #endif

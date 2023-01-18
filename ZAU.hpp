@@ -11,6 +11,9 @@ public :
   float surfaceConstructible()const; // surface constructible totale pour une ZAU
   // friend std::ostream& operator<< (std::ostream &s, Zau  const &z);
       void afficher()const;
+      std::ostream& doprint(std::ostream& os) const{
+      return os << "One";
+    };
 };
 
 
