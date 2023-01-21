@@ -19,8 +19,7 @@ class Za: public virtual Parcelle {
       void setType(string type);
       float getSurfaceBatAgri() const;
       float surfaceConstructiblegetSurfaceBatAgri() const;
-      // friend std::ostream& operator<< (std::ostream &flux, Za  const& za);
-      void afficher()const;
-      std::ostream& doprint(std::ostream& os) const;
+      void doprint(std::ostream& os, print inFile) const override;
+      friend std::ostream& operator<< (std::ostream &flux, Za  const& za);
 };
 #endif

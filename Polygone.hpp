@@ -23,7 +23,7 @@ public:
   Polygone(vector<Point2D<T>> listeSommets);
   Polygone(Polygone<T> const &poly);
   /* Méthode de la classe */
-  vector<Point2D<T>> getSommets( ) const;
+  vector<Point2D<T>> getSommets() const;
   void setSommets(vector<Point2D<T>> listeSommets);
   void addPoint(Point2D<T> point);
   void translater(T x, T y);
@@ -79,7 +79,7 @@ template <typename T> void Polygone<T>::translater(T x, T y){
 *********************************************************************/
 template <typename T>
 std::ostream &operator<<(std::ostream &s, Polygone<T> const &p) {
-  s << "Polygone : "; 
+  // s << "Polygone : "; 
   for( auto& it : p.getSommets())  {
     s << it <<" ";
   }  

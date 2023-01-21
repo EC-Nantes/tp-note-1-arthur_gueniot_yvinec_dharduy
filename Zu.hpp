@@ -13,11 +13,8 @@ class Zu : public virtual Parcelle, public virtual Constructible{
     Zu(int num, string prop, Polygone<int> forme,int  pConstructible, float surfaceConstruite);
     float surfaceConstructible() const ;
     void setType(std::string type);
-    // friend std::ostream& operator<< (std::ostream &flux, Zu const &zu);
-      void afficher()const;
-      std::ostream& doprint(std::ostream& os) const{
-      return os << "One";
-    };
+    void doprint(std::ostream& os, print inFile) const override;
+    friend std::ostream& operator<< (std::ostream &flux, Zu const &zu);
 };
 
 

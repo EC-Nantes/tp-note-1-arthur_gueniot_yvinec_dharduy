@@ -9,7 +9,7 @@ Za::Za(int num, string prop, Polygone<int> forme, string typeCulture,
   this->typeCulture = typeCulture;
 
   // La construction est possible si la surface requise est inférieure à 10% de
-  // la surface du terrain et aussi < à 200m2
+  // la surface du terrain est aussi < à 200m2
   if ( (surfaceBatAgri < this->surface * 0.1) && (surfaceBatAgri < 200) ) {
     this->surfaceBatAgri = surfaceBatAgri;
   } else {
@@ -25,29 +25,24 @@ float Za::getSurfaceBatAgri() const {
   return this->surfaceBatAgri;
 }
 
-// surcharge opérateur
-// std::ostream &operator<<(std::ostream &flux, Za const &za) {
-//   flux << "Parcelle n° " << za.numero << std::endl
-//        << "\tType : " << za.getType() << std::endl
-//        << "\t" << za.getForme() << std::endl
-//        << "\tProprietaire : " << za.getProprietaire() << std::endl
-//        << "\tSurface : " << za.getSurface() << std::endl
-//        << "\tSurface Batiment Agricole : " << za.getSurfaceBatAgri() << " \n"
-//        << "\tType culture : " << za.getTypeCulture() << " \n"
-//        << endl;
-//   return flux;
-// }
+void Za::doprint(std::ostream& os, print inFile) const{
+  switch (inFile) {
+    case CONSOLE:
+      Parcelle::doprint(os, inFile);
+      os << "\tSurface Batiment Agricole : " << this->getSurfaceBatAgri() << std::endl
+            << "\tType culture : " << this->getTypeCulture() << std::endl
+            <<  std::endl;
+      break;
+    case FICHIER:
+      // 1ère ligne ZA : typeParcelle numéro propriétaire typeCulture
+      os << this->getType() <<" "<< this->getNumero() <<" "<< this->getProprietaire() <<" "<< this->getTypeCulture() << std::endl;
+      // 2ème ligne : affichage des sommets du polygone commune à toute les parcelles
+      Parcelle::doprint(os, inFile) ;
+    break;
+  }
+}
 
-void Za::afficher() const{ std::cout << "Affichage Za"; }
-
-std::ostream& Za::doprint(std::ostream& os) const{
-  os << "Parcelle n° " << this->numero <<  " \n"
-       << "\tType : " << this->getType() <<  " \n"
-       << "\t" << this->getForme() <<  " \n"
-       << "\tProprietaire : " << this->getProprietaire() <<  " \n"
-       << "\tSurface : " << this->getSurface() <<  " \n"
-       << "\tSurface Batiment Agricole : " << this->getSurfaceBatAgri() << " \n"
-       << "\tType culture : " << this->getTypeCulture() << " \n"
-       <<  " \n";
-  return os;
+std::ostream& operator<< (std::ostream &flux, Za  const& za){
+  za.doprint(flux, CONSOLE);
+  return flux;
 }

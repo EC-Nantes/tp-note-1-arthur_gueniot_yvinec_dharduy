@@ -5,6 +5,9 @@
 #include <iostream>
 #include "Polygone.hpp"
 
+
+enum print { CONSOLE, FICHIER };
+
 class Parcelle {
   protected :
     std::string type;
@@ -15,23 +18,31 @@ class Parcelle {
     int pConstructible;
 
   public :
+   /* Constructeurs */
     Parcelle(int num, std::string prop, Polygone<int> forme_poly);
     Parcelle(Parcelle &parc);
+
+   /* Accesseur */
     int getNumero() const;
     std::string getProprietaire() const;
     float getSurface() const;
     Polygone<int> getForme() const;  
     std::string getType() const;
+    Polygone<int>* getformePointeur(){return &(this->forme);}
+   /* Mutateur */
     void setNumero(int n);
     void setproprietaire(std::string prop);
     void setForme(Polygone<int> forme);
     virtual void setType(std::string type) =0; //virtuelle pure à redéfinir dans les classes filles (Zxx)
-    friend std::ostream& operator<<(std::ostream& flux,Parcelle const& p);
-    virtual void afficher() const =0;
-    virtual std::ostream& doprint(std::ostream& os) const = 0;
 
-private :
-      void calculSurface();
+   /* Surcharge de méthode de la classe mère ou librairie standard */
+    friend std::ostream& operator<<(std::ostream& flux,Parcelle const& p);
+    virtual void doprint(std::ostream& os, print inFile) const;
+
+   /* Méthode de la classe */
+    void calculSurface();
+    virtual string miseEnFormeDonneesPourFichier();
 };
+
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef _Carte_HPP_
-#define _Carte_HPP_
+#ifndef _carte_HPP_
+#define _carte_HPP_
 
 #include <fstream>
 #include <string>
@@ -14,8 +14,6 @@
 #include "ZAU.hpp"
 #include "Zn.hpp"
 
-using namespace std;
-
 class Carte {
   protected:
     float surfaceTotale ;
@@ -26,11 +24,17 @@ class Carte {
 
     float getSurfaceTotale() const;
     vector<Parcelle*> getParcelles() const;
-  
+
+    void search_and_translate(int num);
+    void saveCarteDansFichier(string file);
+
   private :
     vector<string> split (string s, string delimiter);
-  
+    friend std::ostream& operator<<(std::ostream &o, Carte const &p);
 };
 
-std::ostream& operator<<(std::ostream &o, Carte const &p);
+int crossProduct(Point2D<int> A, Point2D<int> B, Point2D<int> C);
+void isTrigonometric(vector<Point2D<int>> points) ;
+
+
 #endif

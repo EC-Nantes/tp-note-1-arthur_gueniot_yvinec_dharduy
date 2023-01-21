@@ -1,7 +1,7 @@
 # Replit
 .ccls-cache/**
 *replit*
-
+*.txt
 # Prerequisites
 *.d
 

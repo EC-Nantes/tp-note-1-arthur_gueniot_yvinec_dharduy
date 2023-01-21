@@ -9,14 +9,17 @@ void Zn::setType(string type) {
   this->type = type; 
 }
 
-// std::ostream& operator<<(std::ostream &flux, Zn const &p)
-// {
-//   flux << "Parcelle n° "<<p.numero<<std::endl
-//     << "\tType : " << p.getType()  <<std::endl
-//     << "\t" << p.getForme() << std::endl 
-//     << "\tProprietaire : " << p.getProprietaire() << std::endl 
-//     << "\tSurface : " << p.getSurface()<<std::endl;
-//   return flux;
-// }
+void Zn::doprint(std::ostream& os, print inFile) const{
+  switch (inFile) {
+    case CONSOLE:
+      Parcelle::doprint(os, inFile);
+      break;
+    case FICHIER:
+      // 1ère ligne de ZU : typeParcelle numéro propriétaire pConstructible surfaceConstruite
+      os << this->getType() <<" "<< this->getNumero() <<" "<< this->getProprietaire() << std::endl;
+      // 2ème ligne : affichage des sommets du polygone commune à toute les parcelles
+      Parcelle::doprint(os, inFile) ;
+    break;
+  }
+}
 
-void Zn::afficher() const{ std::cout << "Affichage Zn"; }

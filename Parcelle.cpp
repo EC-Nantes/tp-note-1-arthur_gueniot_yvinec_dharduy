@@ -1,25 +1,10 @@
 #include "Parcelle.hpp"
 
-//surcharge opérateur de la parcelle 
-// std::ostream &operator<<(std::ostream &flux, Parcelle const &p) {
-//   flux << "Parcelle n° "<<p.numero<<std::endl
-//     << "\tType : " << p.getType()  <<std::endl
-//     << "\t" << p.getForme() << std::endl 
-//     << "\tProprietaire : " << p.getProprietaire() << std::endl 
-//     << "\tSurface : " << p.getSurface()<<std::endl;
-//   return flux;
-// }
-// std::ostream &operator<<(std::ostream &flux, Parcelle const &p) {
-//   p.afficher();
-//   return flux;
-// }
-std::ostream &operator<<(std::ostream &flux, Parcelle const &p) {
-  return p.doprint(flux);
-}
 Parcelle::Parcelle(int num, std::string prop, Polygone<int> forme_poly)
     : numero(num), proprietaire(prop), forme(forme_poly) {
-    this->calculSurface();
-      this->pConstructible = 0;//évite de redéfinir chaque constructibilité dans chaque classe filles (les ZA, ZAU, ZAN, ZN)
+  this->calculSurface();
+  this->pConstructible = 0; //évite de redéfinir chaque constructibilité dans
+                            // chaque classe filles (les ZA, ZAU, ZAN, ZN)
 }
 
 Parcelle::Parcelle(Parcelle &parc) {
@@ -46,13 +31,42 @@ void Parcelle::calculSurface() {
   vector<Point2D<int>> points = this->forme.getSommets();
 
   float surface = 0;
-  for (int i = 0; i < points.size() - 1; i++) {
-    /* ATTENTION on ne calcule pas le dernier point size() - 1 et "strictement inférieur" on calcule jusqu'à size-2 
-        le dernier point est le aussi le premier de la forme (xn, yn) = (x0, y0) */
-    surface += (points[i].getX() * points[i + 1].getY()) - 
-               (points[i + 1].getX() * points[i].getY());
+  for (int i = 0; i < points.size(); i++) {
+    if ( (i+1) == points.size() ) {
+      surface += (points[i].getX() * points[0].getY()) -
+                 (points[0].getX() * points[i].getY());
+    } else {
+      surface += (points[i].getX() * points[i + 1].getY()) -
+                 (points[i + 1].getX() * points[i].getY());
+    }
   }
   this->surface = surface / 2;
 }
 
+void Parcelle::doprint(std::ostream& os, print inFile) const {
+  switch (inFile) {
+    case CONSOLE:
+      os << "Parcelle n° " << this->numero << std::endl
+         << "\tType : " << this->getType() << std::endl
+         << "\tPolygone : " << this->getForme() << std::endl
+         << "\tProprietaire : " << this->getProprietaire() << std::endl
+         << "\tSurface : " << this->getSurface() << std::endl;
+      break;
+    case FICHIER:
+      // 1ère ligne  du fichier géré par chaque type de parcelle
+      // 2ème ligne
+      os << this->getForme() << std::endl;
+    break;
+  }
+}
 
+std::ostream &operator<<(std::ostream &flux, Parcelle const &p) {
+  p.doprint(flux, CONSOLE);
+  return flux;
+} 
+
+
+string Parcelle::miseEnFormeDonneesPourFichier(){
+  
+  return "test";
+}

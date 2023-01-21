@@ -8,21 +8,31 @@ Zu::Zu(int num, string prop, Polygone<int> forme, int pConstructible,
 }
 
 float Zu::surfaceConstructible() const {
-  return (((pConstructible / 100) * surface) -
-          surfaceConstruite); // return surface constructible;
+  float calcul = (((pConstructible / 100.0) * surface) - surfaceConstruite); // return surface constructible;
+  return calcul;
 }
 
 void Zu::setType(std::string type) { 
   this->type = type; }
 
-// std::ostream &operator<<(std::ostream &flux, Zu const &zu) {
-//   flux << "Parcelle n° "<<zu.numero<<std::endl
-//     << "\tType : " << zu.getType()  <<std::endl
-//     << "\t" << zu.getForme() << std::endl 
-//     << "\tProprietaire : " << zu.getProprietaire() << std::endl 
-//     << "\tSurface : " << zu.getSurface()<<std::endl << "\t% construvctible : "<< zu.pConstructible <<" %" << std::endl <<
-//   "\tsurface construite : "<< zu.surfaceConstruite << std::endl << "\tsurface a construire  : " << zu.surfaceConstructible()<<std::endl;
-//   return flux;
-// }
+void Zu::doprint(std::ostream& os, print inFile) const{
+  switch (inFile) {
+    case CONSOLE:
+      Parcelle::doprint(os, inFile);
+      os << "\t% constructible : " << this->pConstructible <<" %\n" 
+            << "\tsurface construite : "<< this->surfaceConstruite << std::endl 
+            << "\tsurface a construire  : " << this->surfaceConstructible() << std::endl;
+      break;
+    case FICHIER:
+      // 1ère ligne de ZU : typeParcelle numéro propriétaire pConstructible surfaceConstruite
+      os << this->getType() <<" "<< this->getNumero() <<" "<< this->getProprietaire() <<" "<< this->pConstructible <<" "<< this->surfaceConstruite << std::endl;
+      // 2ème ligne : affichage des sommets du polygone commune à toute les parcelles
+      Parcelle::doprint(os, inFile) ;
+    break;
+  }
+}
 
-void Zu::afficher() const { std::cout << "Affichage Zu"; }
+std::ostream &operator<< (std::ostream &flux, Zu  const& zu){
+  zu.doprint(flux, CONSOLE);
+  return flux;
+}

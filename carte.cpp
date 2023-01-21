@@ -4,6 +4,13 @@ Carte::Carte(string pathFichier) {
   
   // Ouverture du fichier
   ifstream fichier{pathFichier};
+  if(fichier)  // si l'ouverture a réussi
+  {       
+     std::cout<<"ouverture et chargement du fichier"<<std::endl;
+  }
+  else { // sinon
+          throw("Impossible d'ouvrir le fichier ! Le nom n'éxiste pas");
+    }
 
   string infoParcelle{""};
   string pointsParcelle{""};
@@ -27,6 +34,11 @@ Carte::Carte(string pathFichier) {
         Point2D<int> a = Point2D<int>(x, y);
         poly.addPoint(a);
       }
+    }
+    try{
+       isTrigonometric(poly.getSommets());
+    }catch(std::string const& erreur){
+      std::cout<<erreur<<std::endl;
     }
     string type = infoSplit[0];
 
@@ -95,8 +107,57 @@ std::ostream &operator<<(std::ostream &o, Carte const &p) {
     o << "La carte est de taille " << p.getSurfaceTotale() << endl;
 
     for (auto  uneParcelle : lesParcelles) {
-      cout << *uneParcelle <<std::endl;
+      cout << *uneParcelle << std::endl;
     }
   }
   return o;
+}
+void Carte::search_and_translate(int num){
+  int sommet, sommetX, sommetY;
+  for(auto &it : this->parcelles){
+    if(it->getNumero() == num){
+      std::cout<<"Donne moi la valeur de X à translater du polygone : "<<std::endl;
+      std::cin >> sommetX;
+      std::cout<<"Donne moi la valeur de Y à translater du polygone : "<<std::endl;
+      std::cin >> sommetY;
+      it->getformePointeur()->translater(sommetX, sommetY);
+      }
+    }
+}
+
+
+void Carte::saveCarteDansFichier(string file) {
+  ofstream myfile (file);
+  if (myfile.is_open())
+  {
+    // Juste à faire un itérateur sur toutes les parcelles et appeler la méthode .doprint avec le paramètre FICHIER
+    for(auto &it : this->parcelles){
+      it->doprint(myfile, FICHIER);
+    }
+    myfile.close();
+  }
+}
+
+int crossProduct(Point2D<int> A, Point2D<int> B, Point2D<int> C) {
+    int x1 = B.getX() - A.getX();
+    int y1 = B.getY() - A.getY();
+    int x2 = C.getX() - A.getX();
+    int y2 = C.getY() - A.getY();
+    return x1*y2 - x2*y1;
+}
+
+void isTrigonometric(vector<Point2D<int>> points) {
+    int total = 0;
+  std::cout<<"coucou"<<std::endl;
+    for (int i = 0; i < points.size(); i++) {
+        Point2D<int> A = points[i];
+        Point2D<int> B = points[(i+1) % points.size()];
+        Point2D<int> C = points[(i+2) % points.size()];
+        total += crossProduct(A, B, C);
+      std::cout<<"\t"<<total;
+    }
+    if(total <= 0){ 
+      std::cout<<"pas bon";
+      throw std::string("Les points du polynome ci-dessous ne sont pas alignés dans le sens trigonométrique");
+      }
 }

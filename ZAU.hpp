@@ -9,11 +9,8 @@ public :
   Zau(int num, string prop, Polygone<int> forme, int pConstructible);
   void setType(std::string type);
   float surfaceConstructible()const; // surface constructible totale pour une ZAU
-  // friend std::ostream& operator<< (std::ostream &s, Zau  const &z);
-      void afficher()const;
-      std::ostream& doprint(std::ostream& os) const{
-      return os << "One";
-    };
+  void doprint(std::ostream& os, print inFile) const override;
+  friend std::ostream& operator<< (std::ostream &s, Zau  const &zau);
 };
 
 

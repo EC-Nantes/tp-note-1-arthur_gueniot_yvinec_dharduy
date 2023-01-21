@@ -1,7 +1,7 @@
 #include "ZAU.hpp"
 
 Zau::Zau(int num, string prop, Polygone<int> forme, int pConstructible) : Parcelle(num, prop, forme) {
-  this->setType("ZN");
+  this->setType("ZAU");
   this->pConstructible = pConstructible;
 }
 
@@ -10,16 +10,25 @@ void Zau::setType(string type) {
 }
 
 float Zau::surfaceConstructible() const{
-  return 0.2;
+  return this->pConstructible;
 }
-// std::ostream &operator<<(std::ostream &s, Zau const &z){
-//   s <<  "Parcelle n° "<<z.numero<<std::endl
-//     << "\tType : " << z.getType()  <<std::endl
-//     << "\t" << z.getForme() << std::endl 
-//     << "\tProprietaire : " << z.getProprietaire() << std::endl 
-//     << "\tSurface : " << z.getSurface()<<std::endl << "\t% constructible : " << z.surfaceConstructible() << " %\n"
-//      << endl;
-//   return s;
-// }
 
-void Zau::afficher() const{ std::cout << "Affichage Zau"; }
+void Zau::doprint(std::ostream& os, print inFile) const{
+  switch (inFile) {
+    case CONSOLE:
+      Parcelle::doprint(os, inFile);
+      os << "\t% constructible : " << this->surfaceConstructible() << " %" << std::endl;
+      break;
+    case FICHIER:
+      // 1ère ligne e ZAU : typeParcelle numéro propriétaire pConstructible
+      os << this->getType() <<" "<< this->getNumero() <<" "<< this->getProprietaire() <<" "<< this->pConstructible << std::endl;
+      // 2ème ligne : affichage des sommets du polygone commune à toute les parcelles
+      Parcelle::doprint(os, inFile) ;
+    break;
+  }
+}
+
+std::ostream& operator<< (std::ostream &flux, Zau  const& zau){
+  zau.doprint(flux, CONSOLE);
+  return flux;
+}
