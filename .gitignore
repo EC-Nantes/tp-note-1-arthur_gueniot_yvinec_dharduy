@@ -4,6 +4,7 @@
 *.txt
 # Prerequisites
 *.d
+main
 
 # Compiled Object files
 *.slo

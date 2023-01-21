@@ -1,20 +1,19 @@
 #include "carte.hpp"
 
 Carte::Carte(string pathFichier) {
-  
   // Ouverture du fichier
   ifstream fichier{pathFichier};
   if(fichier)  // si l'ouverture a réussi
   {       
-     std::cout<<"ouverture et chargement du fichier"<<std::endl;
+    std::cout<<"ouverture et chargement du fichier"<<std::endl;
   }
   else { // sinon
-          throw("Impossible d'ouvrir le fichier ! Le nom n'éxiste pas");
-    }
+    throw("Impossible d'ouvrir le fichier ! Le nom n'éxiste pas");
+  }
 
   string infoParcelle{""};
   string pointsParcelle{""};
-
+  
   while ((getline(fichier >> std::ws, infoParcelle)) &&
          (getline(fichier >> std::ws, pointsParcelle))) {
 
@@ -37,8 +36,8 @@ Carte::Carte(string pathFichier) {
     }
     try{
        isTrigonometric(poly.getSommets());
-    }catch(std::string const& erreur){
-      std::cout<<erreur<<std::endl;
+    } catch(std::string const& erreur){
+      std::cerr<<erreur<<std::endl;
     }
     string type = infoSplit[0];
 
@@ -59,17 +58,17 @@ Carte::Carte(string pathFichier) {
       this->parcelles.push_back(parcelleAjouter);
     }
 
-     else if (type == "ZU") {
+    else if (type == "ZU") {
       Zu *parcelleAjouter =
           new Zu(stoi(infoSplit[1]), infoSplit[2], poly, stoi(infoSplit[3]), stof(infoSplit[4]));
       this->parcelles.push_back(parcelleAjouter);
-       }
+    }
     else {
       cout << type << endl;
     }
   }
 
-  // Calcul taille surface
+  /** Calcul taille surface de la carte */
   float max;
   for (auto const uneParcelle : this->parcelles) {
     max += uneParcelle->getSurface();
@@ -93,50 +92,66 @@ vector<string> Carte::split(string s, string delimiter) {
   return res;
 }
 
+
 float Carte::getSurfaceTotale() const { return this->surfaceTotale; }
 
+
 vector<Parcelle *> Carte::getParcelles() const { return this->parcelles; }
+
 
 std::ostream &operator<<(std::ostream &o, Carte const &p) {
   vector<Parcelle *> lesParcelles = p.getParcelles();
 
   if (lesParcelles.size() == 0) {
-    o << "Aucune parcelle !" << endl;
+    throw ("Aucune parcelle, la carte est vide !");
   }
    else {
     o << "La carte est de taille " << p.getSurfaceTotale() << endl;
 
     for (auto  uneParcelle : lesParcelles) {
-      cout << *uneParcelle << std::endl;
+      std::cout << *uneParcelle << std::endl;
     }
   }
   return o;
 }
-void Carte::search_and_translate(int num){
+
+
+Parcelle* Carte::search_and_translate(int num){
   int sommet, sommetX, sommetY;
+  /** Recherche dans le vecteur parcelles celui qui a le numéro demandé par l'utilisateur */
   for(auto &it : this->parcelles){
     if(it->getNumero() == num){
+      /** Demander à l'utilisateur la translation souhaitée en x et y */
       std::cout<<"Donne moi la valeur de X à translater du polygone : "<<std::endl;
       std::cin >> sommetX;
       std::cout<<"Donne moi la valeur de Y à translater du polygone : "<<std::endl;
       std::cin >> sommetY;
       it->getformePointeur()->translater(sommetX, sommetY);
-      }
+      return it;
     }
+  }
+  throw ("Pas de parcelle avec le numéro " + std::to_string(num) +" !");
 }
 
 
 void Carte::saveCarteDansFichier(string file) {
   ofstream myfile (file);
+  /** Vérifier l'ouverture du fichier */
   if (myfile.is_open())
   {
-    // Juste à faire un itérateur sur toutes les parcelles et appeler la méthode .doprint avec le paramètre FICHIER
+    std::cout<<"Ecriture des données dans le fichier '"<< file << "'" << std::endl;
+    /** Enregistrer chaque parcelle dans le fichier au format FICHIER */
     for(auto &it : this->parcelles){
       it->doprint(myfile, FICHIER);
     }
+    /** Fermer le fichier */
     myfile.close();
+  } else { 
+      /** signaler une anomalie dans l'ouverture du fichier */
+      throw("Impossible d'ouvrir le fichier '" + file + "' !");
   }
 }
+
 
 int crossProduct(Point2D<int> A, Point2D<int> B, Point2D<int> C) {
     int x1 = B.getX() - A.getX();
@@ -146,18 +161,19 @@ int crossProduct(Point2D<int> A, Point2D<int> B, Point2D<int> C) {
     return x1*y2 - x2*y1;
 }
 
+
 void isTrigonometric(vector<Point2D<int>> points) {
-    int total = 0;
+  int total = 0;
   std::cout<<"coucou"<<std::endl;
-    for (int i = 0; i < points.size(); i++) {
-        Point2D<int> A = points[i];
-        Point2D<int> B = points[(i+1) % points.size()];
-        Point2D<int> C = points[(i+2) % points.size()];
-        total += crossProduct(A, B, C);
-      std::cout<<"\t"<<total;
-    }
-    if(total <= 0){ 
-      std::cout<<"pas bon";
-      throw std::string("Les points du polynome ci-dessous ne sont pas alignés dans le sens trigonométrique");
-      }
+  for (int i = 0; i < points.size(); i++) {
+      Point2D<int> A = points[i];
+      Point2D<int> B = points[(i+1) % points.size()];
+      Point2D<int> C = points[(i+2) % points.size()];
+      total += crossProduct(A, B, C);
+    std::cout<<"\t"<<total;
+  }
+  if(total <= 0){ 
+    std::cout<<"pas bon";
+    throw std::string("Les points du polynome ci-dessous ne sont pas alignés dans le sens trigonométrique");
+  }
 }

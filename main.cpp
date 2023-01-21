@@ -55,85 +55,76 @@ void testPolygone() {
   Polygone<int> poly3(poly1);
   std::cout << "Affichage du polygone 3 créé par recopiede polygone 1" << std::endl;
   std::cout << poly3 << std::endl;
-
-  
-  /****************************************************************************************************
-  * DEBUT DEBUG A SUPPRIMER
-  * Exemple pour enregistrer dans un fichier à partir de la méthode doprint() pour Coco
-  ******************************************************************************************************/
-  Za test(2, "toto", poly3, "bouffeur de uc", 10.2, 1);
-  std::cout << test <<std::endl;
-  
-  ofstream myfile ("example.txt");
-  if (myfile.is_open())
-  {
-    // Juste à faire un itérateur sur toutes les aprcelle et appeler la méthode .doprint avec le paramètre FICHIER
-    test.doprint(myfile, FICHIER);
-    myfile.close();
-  }
-  /****************************************************************************************************
-  *  FIN DEBUG A SUPPRIMER 
-  ******************************************************************************************************/
 }
 
 void menu_deroulant (void) {
-  int choix =0;
-  bool leave=1;
+  int choix = 0;
+  bool leave = 1;
   string file_name;
-  std::unique_ptr<Carte> carte;
-  
+  std::unique_ptr<Carte> carte;  
   
   while(leave==1){
+    /** Affichage du texte d'acceuil */
     std::cout<<"Menu déroulant du projet parcelle, choisissez l'action à réaliser en indiquant le numéro de l'action puis pressez entrer"<<std::endl
       <<"\t1- Charger un fichier"<<std::endl
       <<"\t2- Translater Polygone"<<std::endl
       <<"\t3- Sauvegarder dans un fichier"<<std::endl
       <<"\t4- Afficher toutes les parcelles"<<std::endl
-      <<"\t5- Quitter"<< std::endl
+      <<"\t0- Quitter"<< std::endl
       <<"Votre choix : ";
     std::cin >> choix;
 
     /** Gestion du Menu d'acceuil */
     switch(choix){
-      
       case 1 :{
+        /** Charger un fichier de carte */
         std::cout<<std::endl<<"Indiquez le nom du fichier que l'on doit charger tel quel : ";
         try{
+          /** Récupérer l'entrée utilisateur correspondant au fichier selectionné et créer la carte à l'aide du constructeur */
           std::cin >> file_name;
-          // if ( !std::filesystem::exists(file_name) ) {
-          //   throw ("Le fichier demandé n'existe pas");
-          // }
           carte = make_unique <Carte>(file_name);
+
+          /** Afficher la carte */
           cout << *carte << endl;
         }catch(const char* err){
           std::cerr<<err<<std::endl;
         }
       break;
       }
+      
       case 2 : {
+        /** Translater une parcelle indiqu par l'utilisateur */
         int num_translation =0;
         std::cout<<std::endl<<"Indiquez le numero de la parcelle du polygone a translater : ";
         std::cin>>num_translation;
-        carte->search_and_translate(num_translation);
-        std::cout << *carte << std::endl;
+        /** La parcelle doit exister sinon exception */
+        try {
+          std::cout << *carte->search_and_translate(num_translation) << std::endl;
+        } catch (const char* err) {
+          std::cerr<<err<<std::endl;
+        }
       break;
       }
       case 3 :
+        /** Création d'un fichier avec la sauvegarde de la carte */
         std::cout<<std::endl<<"Indiquez le nom du fichier que l'on doit enregistrer : ";
         std::cin >> file_name;
         carte->saveCarteDansFichier(file_name);
         break;
       case 4 :
-           std::cout << "Affichage des informations de la carte :"<< std::endl;
-           std::cout << *carte << std::endl;
+        /** Affichage de la carte dans la console */
+        std::cout << "Affichage des informations de la carte :"<< std::endl;
+        std::cout << *carte << std::endl;
       break;
         
-      case 5 : 
+      case 0 : 
+        /** Quitter l'éxecution de l'application proprement */
         std::cout << "Au revoir !!" << std::endl;
         leave=0;
       break;
       default:
-        throw std::invalid_argument("Valeur comprise entre 1 et 5");
+        /** en cas de mauvaise entrée indiquer un message d'erreur */
+        std::cout << "Valeur comprise entre 1 et 5" << std::endl << std::endl;
     }
   }
 }
@@ -174,12 +165,5 @@ int main(void){
   // cout << carte << endl;
   menu_deroulant();
 
-  
-  // std::vector<Point2D<int>> sommets = {Point2D<int>(1, 2), Point2D<int>(3, 4),
-  //                                      Point2D<int>(5, 6)};
-  // /** Création d'un polygone à partir de Sommets */
-  // Polygone<int> poly1(sommets);
-  // Za test_za(10, "toto", poly1, "terre", 100.0, 1);
-  // std::cout << test_za<< std::endl;
   return 0;
 }

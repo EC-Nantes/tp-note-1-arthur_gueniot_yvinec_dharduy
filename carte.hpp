@@ -25,7 +25,7 @@ class Carte {
     float getSurfaceTotale() const;
     vector<Parcelle*> getParcelles() const;
 
-    void search_and_translate(int num);
+    Parcelle* search_and_translate(int num);
     void saveCarteDansFichier(string file);
 
   private :
