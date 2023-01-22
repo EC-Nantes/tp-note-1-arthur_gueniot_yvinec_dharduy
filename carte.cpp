@@ -34,11 +34,17 @@ Carte::Carte(string pathFichier) {
         poly.addPoint(a);
       }
     }
+    //sens trigo verif
     try{
        isTrigonometric(poly.getSommets());
     } catch(std::string const& erreur){
-      std::cerr<<erreur<<std::endl;
+      std::cerr<<erreur<<std::endl<<poly<<std::endl;
     }
+    //polygone croisé ou pas
+    if (poly.isSelfIntersecting()) {
+        std::cout<<"Attention, Le polygone est croisé.\n";
+    }
+    
     string type = infoSplit[0];
 
     if (type == "ZA") {
@@ -164,16 +170,15 @@ int crossProduct(Point2D<int> A, Point2D<int> B, Point2D<int> C) {
 
 void isTrigonometric(vector<Point2D<int>> points) {
   int total = 0;
-  std::cout<<"coucou"<<std::endl;
   for (int i = 0; i < points.size(); i++) {
       Point2D<int> A = points[i];
       Point2D<int> B = points[(i+1) % points.size()];
       Point2D<int> C = points[(i+2) % points.size()];
       total += crossProduct(A, B, C);
-    std::cout<<"\t"<<total;
+    //std::cout<<"\t"<<total;
+      if(total <= 0){ 
+    throw std::string("Les points du polynome ci-dessous ne sont pas alignés dans le sens trigonométrique \n");
   }
-  if(total <= 0){ 
-    std::cout<<"pas bon";
-    throw std::string("Les points du polynome ci-dessous ne sont pas alignés dans le sens trigonométrique");
+
   }
 }

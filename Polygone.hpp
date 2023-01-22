@@ -28,6 +28,8 @@ template <typename T> class Polygone {
     void setSommets(vector<Point2D<T>> listeSommets);
     void addPoint(Point2D<T> point);
     void translater(T x, T y);
+    bool doIntersect(Point2D<T> p1, Point2D<T> q1, Point2D<T> p2, Point2D<T> q2);
+    bool isSelfIntersecting();
   
      /* Surcharge de méthode de la classe mère ou librairie standard */
     friend std::ostream &operator<< <T>(std::ostream &s, Polygone<T> const &p);
@@ -103,6 +105,52 @@ std::ostream &operator<<(std::ostream &s, Polygone<T> const &p) {
     s << it <<" ";
   }  
   return s;
+}
+
+// Fonction pour vérifier si deux segments de droite se croisent
+template <typename T>
+bool Polygone<T>::doIntersect(Point2D<T> p1, Point2D<T> q1, Point2D<T> p2, Point2D<T> q2) {
+    // Calcul des coefficients des équations des droites formées par les segments
+    double a1 = q1.getY() - p1.getY();
+    double b1 = p1.getX() - q1.getX();
+    double c1 = a1 * p1.getX() + b1 * p1.getY();
+
+    double a2 = q2.getY() - p2.getY();
+    double b2 = p2.getX() - q2.getX();
+    double c2 = a2 * p2.getX() + b2 * p2.getY();
+
+    double determinant = a1 * b2 - a2 * b1;
+
+    if (determinant == 0) {
+        // Les droites sont parallèles
+        return false;
+    } else {
+        double x = (b2 * c1 - b1 * c2) / determinant;
+        double y = (a1 * c2 - a2 * c1) / determinant;
+        if (min(p1.getX(), q1.getX()) <= x && x <= max(p1.getX(), q1.getX()) && min(p1.getY(), q1.getY()) <= y && y <= max(p1.getY(), q1.getY()) &&
+            min(p2.getX(), q2.getX()) <= x && x <= max(p2.getX(), q2.getX()) && min(p2.getY(), q2.getY()) <= y && y <= max(p2.getY(), q2.getY())) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template <typename T>
+bool Polygone<T>::isSelfIntersecting() {
+    auto points = this->getSommets();
+    int n = points.size();
+    for (int i = 0; i < n; i++) {
+        Point2D<T> p1 = points[i];
+        Point2D<T> q1 = points[(i + 1) % n];
+        for (int j = i + 2; j < n - 1; j++) {
+            Point2D<T> p2 = points[j];
+            Point2D<T> q2 = points[(j + 1) % n];
+            if (doIntersect(p1, q1, p2, q2)) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 

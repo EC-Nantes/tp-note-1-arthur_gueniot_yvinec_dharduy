@@ -87,7 +87,7 @@ void menu_deroulant (void) {
           /** Afficher la carte */
           cout << *carte << endl;
         }catch(const char* err){
-          std::cerr<<err<<std::endl;
+          std::cout<<err<<std::endl;
         }
       break;
       }
