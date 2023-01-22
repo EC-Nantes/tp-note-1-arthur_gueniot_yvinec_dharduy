@@ -5,11 +5,12 @@
 
 class Zn : public virtual Parcelle{
 
-public :
-  Zn(int num, string prop, Polygone<int> forme);
-
-  void setType(string type);
-
-  void doprint(std::ostream& os, print inFile) const override;
+  public :
+   /* Constructeur */
+    Zn(int num, string prop, Polygone<int> forme);
+  
+   /* Surcharge de méthode de la classe mère ou librairie standard */
+    void setType(string type);
+    void doprint(std::ostream& os, print inFile) const override;
 };
 #endif /*_ZN_HPP_*/

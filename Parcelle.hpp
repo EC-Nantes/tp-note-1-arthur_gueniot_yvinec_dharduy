@@ -22,14 +22,15 @@ class Parcelle {
     Parcelle(int num, std::string prop, Polygone<int> forme_poly);
     Parcelle(Parcelle &parc);
 
-   /* Accesseur */
+   /* Accesseurs */
     int getNumero() const;
     std::string getProprietaire() const;
     float getSurface() const;
     Polygone<int> getForme() const;  
     std::string getType() const;
     Polygone<int>* getformePointeur(){return &(this->forme);}
-   /* Mutateur */
+
+   /* Mutateurs */
     void setNumero(int n);
     void setproprietaire(std::string prop);
     void setForme(Polygone<int> forme);

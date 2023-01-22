@@ -10,8 +10,13 @@ class Zu : public virtual Parcelle, public virtual Constructible{
     float surfaceConstruite;
   
   public :
+   /* Constructeur */
     Zu(int num, string prop, Polygone<int> forme,int  pConstructible, float surfaceConstruite);
+
+   /* Méthodes de la classe */
     float surfaceConstructible() const ;
+
+   /* Surcharge de méthode de la classe mère ou librairie standard */
     void setType(std::string type);
     void doprint(std::ostream& os, print inFile) const override;
     friend std::ostream& operator<< (std::ostream &flux, Zu const &zu);

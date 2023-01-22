@@ -20,16 +20,20 @@ class Carte {
     vector<Parcelle*> parcelles ;
 
   public:
+   /* Constructeurs */
     Carte (string pathFichier);
 
+   /* Accesseur */
     float getSurfaceTotale() const;
     vector<Parcelle*> getParcelles() const;
 
+   /* Méthode de la classe */
     Parcelle* search_and_translate(int num);
     void saveCarteDansFichier(string file);
-
   private :
     vector<string> split (string s, string delimiter);
+
+   /* Surcharge de méthode de la classe mère ou librairie standard */
     friend std::ostream& operator<<(std::ostream &o, Carte const &p);
 };
 
