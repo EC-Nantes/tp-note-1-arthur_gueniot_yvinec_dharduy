@@ -1,3 +1,7 @@
+# Doxygen
+html/**
+latex/**
+
 # Replit
 .ccls-cache/**
 *replit*
