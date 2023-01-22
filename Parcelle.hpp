@@ -42,7 +42,6 @@ class Parcelle {
 
    /* Méthode de la classe */
     void calculSurface();
-    virtual string miseEnFormeDonneesPourFichier();
 };
 
 

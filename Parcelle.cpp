@@ -64,9 +64,3 @@ std::ostream &operator<<(std::ostream &flux, Parcelle const &p) {
   p.doprint(flux, CONSOLE);
   return flux;
 } 
-
-
-string Parcelle::miseEnFormeDonneesPourFichier(){
-  
-  return "test";
-}

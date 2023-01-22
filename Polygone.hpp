@@ -42,7 +42,7 @@ template <typename T> class Polygone {
  * Constructeur par défaut
  */
 template <typename T> Polygone<T>::Polygone() {
-  /* A DEFINIR ce que l'on met dedans */
+  /* Rien a faire pour le moment */
 }
 
 /** 
@@ -80,6 +80,11 @@ template <typename T> void Polygone<T>::setSommets(vector<Point2D<T>> listeSomme
  */
 template <typename T> void Polygone<T>::addPoint(Point2D<T> point){
   this->sommets.push_back (point);
+      try{
+       isTrigonometric(this->getSommets());
+    } catch(std::string const& erreur){
+      std::cerr<<erreur<<std::endl<<*this<<std::endl;
+    }
 }
 
 /** 

@@ -20,7 +20,6 @@ class Za: public virtual Parcelle {
    /* Méthodes de la classe */
     string getTypeCulture() const;
     float getSurfaceBatAgri() const;
-    float surfaceConstructiblegetSurfaceBatAgri() const;
 
    /* Surcharge de méthode de la classe mère ou librairie standard */
     void setType(string type);

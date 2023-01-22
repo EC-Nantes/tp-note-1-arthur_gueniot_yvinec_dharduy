@@ -29,7 +29,7 @@ class Point2D
 
    /* Mutateurs */
     void setX(T x);
-    void setY(T x);
+    void setY(T y);
 
    /* Méthodes de la classe */
     void translater(T xt, T yt);

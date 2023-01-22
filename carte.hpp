@@ -15,24 +15,20 @@
 #include "Zn.hpp"
 
 class Carte {
-  protected:
+  private:
     float surfaceTotale ;
     vector<Parcelle*> parcelles ;
-
   public:
    /* Constructeurs */
     Carte (string pathFichier);
-
    /* Accesseur */
     float getSurfaceTotale() const;
     vector<Parcelle*> getParcelles() const;
-
    /* Méthode de la classe */
     Parcelle* search_and_translate(int num);
     void saveCarteDansFichier(string file);
   private :
-    vector<string> split (string s, string delimiter);
-
+    vector<string> split (string s, string delimiter);//pour délimiter le texte charger des fichiers
    /* Surcharge de méthode de la classe mère ou librairie standard */
     friend std::ostream& operator<<(std::ostream &o, Carte const &p);
 };
